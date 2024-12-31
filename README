@@ -1,8 +1,148 @@
-Instalacciones
+# TaskManagerAPI  
 
-1_EXPRESS
-2_NODEMON
-3_MORGAN
-4_MONGOOSE
-5_MONGODB
-6_EXPRESS-VALIDATOR
+TaskManagerAPI es una solución eficiente para gestionar tareas. Diseñada para desarrolladores que buscan una API robusta, escalable y fácil de integrar utilizando **Node.js** y **MongoDB Atlas**.  
+
+## Índice  
+- [Descripción](#descripción)  
+- [Características](#características)  
+- [Requisitos previos](#requisitos-previos)  
+- [Instalación](#instalación)  
+- [Configuración](#configuración)  
+- [Uso](#uso)  
+- [Estructura del proyecto](#estructura-del-proyecto)  
+- [Contribuciones](#contribuciones)  
+- [Licencia](#licencia)  
+
+---  
+
+## Descripción  
+
+TaskManagerAPI permite a los usuarios:  
+- Crear, actualizar, eliminar y listar tareas.  
+- Asignar tareas a usuarios específicos.  
+- Consultar tareas por prioridad, estado o fecha límite.  
+- Gestionar proyectos asociados a las tareas.  
+
+Construida con **Node.js**, utiliza **MongoDB Atlas** como base de datos para una integración en la nube simple y confiable.  
+
+---  
+
+## Características  
+
+- Autenticación JWT para garantizar la seguridad.  
+- Gestión avanzada de usuarios y roles.  
+- Soporte para filtros y búsquedas personalizadas.  
+- Documentación Swagger integrada.  
+- Despliegue listo para integrarse con MongoDB Atlas.  
+
+---  
+
+## Requisitos previos  
+
+Antes de empezar, asegúrate de tener lo siguiente instalado:  
+
+- [Node.js](https://nodejs.org/) (versión X.X o superior)  
+- [MongoDB Atlas](https://www.mongodb.com/atlas/database) (deberás configurar un clúster gratuito o usar una base existente)  
+- [Postman](https://www.postman.com/) o cURL para probar la API (opcional).  
+
+---  
+
+## Instalación  
+
+1. **Clonar el repositorio**  
+   ```bash  
+   git clone https://github.com/tuusuario/TaskManagerAPI.git  
+   cd TaskManagerAPI  
+   ```  
+
+2. **Instalar dependencias**  
+   ```bash  
+   npm install  
+   ```  
+
+3. **Configurar variables de entorno**  
+   Renombra el archivo `.env.example` a `.env` y ajusta las variables según tu configuración de MongoDB Atlas.  
+   ```bash  
+   cp .env.example .env  
+   ```  
+
+4. **Ejecutar el proyecto**  
+   ```bash  
+   npm start  
+   ```  
+
+---  
+
+## Configuración  
+
+Las principales variables que deberías configurar en el archivo `.env` son:  
+
+```env  
+PORT=3000  
+MONGO_URI=mongodb+srv://<usuario>:<contraseña>@<cluster>.mongodb.net/taskmanager  
+JWT_SECRET=tuclave  
+```  
+
+---  
+
+## Uso  
+
+### Endpoints principales  
+
+| Método | Endpoint            | Descripción                     |  
+|--------|---------------------|---------------------------------|  
+| POST   | `/auth/login`       | Inicia sesión y devuelve un JWT. |  
+| GET    | `/tasks`            | Lista todas las tareas.         |  
+| POST   | `/tasks`            | Crea una nueva tarea.           |  
+| PUT    | `/tasks/:id`        | Actualiza una tarea existente.  |  
+| DELETE | `/tasks/:id`        | Elimina una tarea.              |  
+
+### Documentación completa  
+La API incluye documentación Swagger. Una vez levantado el proyecto, accede a `http://localhost:3000/api-docs` para ver todos los endpoints disponibles.  
+
+---  
+
+## Estructura del proyecto  
+
+```plaintext  
+TaskManagerAPI/  
+├── src/  
+│   ├── controllers/  # Lógica de los endpoints  
+│   ├── models/       # Definición de modelos y esquemas de MongoDB  
+│   ├── routes/       # Configuración de rutas  
+│   ├── middlewares/  # Middlewares personalizados  
+│   ├── utils/        # Funciones auxiliares  
+│   └── services/     # Lógica de negocio  
+├── .env.example       # Variables de entorno de ejemplo  
+├── package.json       # Dependencias del proyecto  
+└── README.md          # Documentación  
+```  
+
+---  
+
+## Contribuciones  
+
+¡Contribuciones son bienvenidas! Por favor, sigue estos pasos:  
+
+1. Haz un fork del repositorio.  
+2. Crea una rama nueva para tu funcionalidad:  
+   ```bash  
+   git checkout -b feature/nueva-funcionalidad  
+   ```  
+3. Envía un pull request una vez terminado.  
+
+---  
+
+## Licencia  
+
+Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.  
+
+---  
+
+### Notas finales  
+
+Si necesitas ayuda, no dudes en abrir un [issue](https://github.com/tuusuario/TaskManagerAPI/issues).  
+
+---
+
+¿Necesitas ajustar algún detalle adicional o agregar algo más?
