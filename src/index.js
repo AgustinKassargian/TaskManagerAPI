@@ -4,8 +4,10 @@ import { connectDB } from "./db.js";
 
 dotenv.config();
 
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
+const BASE_URL = process.env.BASE_URL
 
 connectDB();
-app.listen(port)
-console.log('Server on port', port)
+app.listen(PORT);
+console.log('Server on port', PORT);
+console.log(`Documentación disponible en ${BASE_URL}/api-docs`);
