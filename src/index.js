@@ -10,4 +10,4 @@ const BASE_URL = process.env.BASE_URL
 connectDB();
 app.listen(PORT);
 console.log('Server on port', PORT);
-console.log(`Documentación disponible en ${BASE_URL}/api-docs`);
+//console.log(`Documentación disponible en ${BASE_URL}/api-docs`);

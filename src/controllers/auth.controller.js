@@ -1,14 +1,13 @@
 import pkg from 'express';
 import User from '../models/user.model.js';
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import createAccessToken from '../services/jwt.js';
+import jwt from 'jsonwebtoken'
 import dotenv from "dotenv";
 
 const { Request, Response } = pkg;
 
 dotenv.config();
-
-const SECRET_KEY = process.env.SECRET_KEY;
 
 export const register = async (req, res) => {
     const { username,password, email } = req.body;
@@ -21,9 +20,18 @@ export const register = async (req, res) => {
         });
 
         await newUser.save();
+        const token = await createAccessToken({id: newUser._id})
+        res.cookie('authToken', token,{
+            sameSite:'none',
+            secure: true,
+            httpOnly: false
+        })
         res.status(201).send({
             message: "Usuario creado correctamente",
-            newUser
+            newUser:{
+                username,
+                email
+            }
         });
     } catch (error) {
         res.status(500).send({
@@ -34,12 +42,12 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-    const { username, password, email } = req.body;
+    const { username, password } = req.body;
 
     try {
         const user = await User.findOne({
             $or: [
-                { email: email },
+                { email: username },
                 { username: username }
             ],
         });
@@ -53,25 +61,21 @@ export const login = async (req, res) => {
             return res.status(400).json({ message: "Contraseña incorrecta" });
         }
 
-        if(user.online === true){
-            return res.status(409).json({
-                message: "Ya existe una sesión activa para este usuario. Por favor, cierra sesión antes de iniciar una nueva."
-            });
-        }
-
-        const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: '10h' });
-        user.online = true;
-        user.save();
-
-        res.json({
+        const token = await createAccessToken({id: user._id})
+        res.cookie('authToken', token,{
+            sameSite:'none',
+            secure: true,
+            httpOnly: false
+        })
+        res.status(200).json({
             message: "Login exitoso",
             user: {
                 id: user._id,
                 username: user.username,
-                email: user.email
+                email: user.email,
+                token: token
             },
-            token: token,
-        });
+            });
 
     } catch (err) {
         res.status(500).json({ 
@@ -82,28 +86,36 @@ export const login = async (req, res) => {
     }
 };
 
-export const logout = async (req, res)=>{
-    const userId = req.user?.id
-    if(!userId){
-        res.status(403).json({message:'No existe una sesion iniciada'});
-    }
-    const user = await User.findOne({
-        _id:userId,
-        online: true
-    });
-    
-    if(!user){
-        res.status(403).json({message:'No existe una sesion iniciada'});
-        return;
-    }
+export const logout = async (req, res) => {
     try {
-        user.online = false;
-        await user.save();
-        res.status(200).json({message:'Sesion cerrada con exito.'})
+        const authToken = req.cookies.authToken;
+        if (!authToken) {
+            return res.status(200).json({ message: 'Sesión cerrada con éxito.' });
+        }
+        res.clearCookie('authToken');
+        res.status(200).json({ message: 'Sesión cerrada con éxito.' });
     } catch (error) {
-        res.status(500).json({message:'Error al cerrar sesion.', error:error.message})
-
+        res.status(500).json({ message: 'Error al cerrar sesión.', error: error.message });
     }
+};
+
+
+export const verify = async (req, res) => {
+    const {authToken} = req.cookies
+
+    if(!authToken) res.status(401).json({message:'No autorizado: token no proporcionado'})
+
+    const SECRET_KEY = process.env.SECRET_KEY
+    jwt.verify(authToken, SECRET_KEY, async (err, user) => {
+        if(err) return res.status(401).json({message:'No autorizado: token invalido'})
+        const userFounded = await User.findById(user.id);
+        if(!userFounded) return res.status(401).json({message:'No autorizado: Usuario no encontrado'});
+        return res.status(200).json({
+            id: userFounded._id,
+            email: userFounded.email,
+            username: userFounded.username
+        })
+    })
 }
 
 

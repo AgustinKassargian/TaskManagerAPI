@@ -1,6 +1,6 @@
 import { Router } from "express";
 import authentication from "../middlewares/authentication.middleware.js";
-import { createTask, deleteTask, editTask, getTaskByID, getTasks,getMyTasks } from "../controllers/task.controller.js";
+import { createTask, deleteTask, editTask, getTaskByID, getTasks,getMyTasks, cleanMyTasks } from "../controllers/task.controller.js";
 import { validateCreateTasks, validateGetTaskByID, validateEditTask, validateDeleteTask, validateGetTasks } from "../services/taskValidators.js";
 
 const router = Router();
@@ -46,6 +46,12 @@ router.get(
     '/my-tasks',
     authentication,
     getMyTasks
+)
+
+router.delete(
+    '/clean-my-tasks',
+    authentication,
+    cleanMyTasks
 )
 
 export default router;

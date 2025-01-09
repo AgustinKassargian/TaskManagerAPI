@@ -120,29 +120,8 @@ TaskManagerAPI/
 
 ---  
 
-## Contribuciones  
-
-¡Contribuciones son bienvenidas! Por favor, sigue estos pasos:  
-
-1. Haz un fork del repositorio.  
-2. Crea una rama nueva para tu funcionalidad:  
-   ```bash  
-   git checkout -b feature/nueva-funcionalidad  
-   ```  
-3. Envía un pull request una vez terminado.  
-
----  
-
-## Licencia  
-
-Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.  
-
----  
 
 ### Notas finales  
 
 Si necesitas ayuda, no dudes en abrir un [issue](https://github.com/tuusuario/TaskManagerAPI/issues).  
 
----
-
-¿Necesitas ajustar algún detalle adicional o agregar algo más?
